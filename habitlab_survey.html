@@ -472,13 +472,16 @@
   <div class="screen" id="screen-result">
     <div class="result-level" id="resultLevel"></div>
     <div class="result-desc" id="resultDesc"></div>
-    <a href="https://whattime.co.kr/thehabitlab/20min" target="_blank" class="btn-cta" onclick="trackFunnel('7_상담신청클릭')">20분 무료 상담 신청하기</a>
+    <!-- 2026-10-19: 결과를 보고 상담 없이 나가던 사람이 스스로 확인하도록 안내서(앱)를 큰 버튼으로, 상담은 그 아래 작게 -->
+    <a href="https://claude.center1124.workers.dev/guide" id="guideLink" class="btn-cta" onclick="trackFunnel('7_안내서클릭')">내 결과 안내서 보기</a>
+    <p style="margin-top:12px;text-align:center;font-size:13px"><a href="https://whattime.co.kr/thehabitlab/20min" target="_blank" style="color:inherit" onclick="trackFunnel('7_상담신청클릭')">바로 20분 무료 상담 신청하기</a></p>
     <p class="disclaimer" style="margin-top:16px">* 이 진단은 의학적 검사가 아닌, 더 해빗랩 다이어트 디자인 코칭에서 사용하는 대사 레벨 진단 도구입니다.</p>
   </div>
 </div>
 
 <script>
 // ─── Google Apps Script URL ───
+const GUIDE_URL = 'https://claude.center1124.workers.dev/guide';
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxfz9LrWKZ_feDvi9j6puxwwAC_LTbd_U2hrjG7FC5HGegDuyu2wl5YcVcSXVoA7HCd/exec';
 
 // ─── 퍼널 추적 ───
@@ -868,6 +871,8 @@ function showResult() {
       </div>
       <div class="result-cta-text">${lv.cta}</div>
     `;
+    // 안내서로 넘길 때는 단계 번호만 싣는다 (이름·전화번호는 주소에 넣지 않는다)
+    document.getElementById('guideLink').href = GUIDE_URL + '?level=' + lv.level;
     goTo('screen-result');
     sendToSheets(score, lv);
   }, 1800);
